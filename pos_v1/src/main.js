@@ -6,17 +6,19 @@ function printInventory(inputs) {
     } else {
         input = inputs;
     }
-    for(var j = 0; j < input.length; j++) {
+    var obj = {};
+    obj = dealDiffBarcode(input);
+    for(var key in obj) {
         for(var i = 0; i < allItems.length; i++) {
-            if(input[j] == allItems[i].barcode) {
-                var item = {
-                  barcode: inputs,
+            if(key == allItems[i].barcode) {
+                var Item = {
+                  barcode: key,
                   name: allItems[i].name,
                   unit: allItems[i].unit,
                   price: allItems[i].price,
-                  count: input.length
+                  count: obj[key]
                 };
-                items.push(item);
+                items.push(Item);
                 break;
             }
         }
@@ -24,14 +26,41 @@ function printInventory(inputs) {
     print(items);
 }
 
-function print(items) {
-    var result;
-    for(var a = 0; a < items.length; a++) {
-        result =
-        '***<没钱赚商店>购物清单***\n' + '名称：' + items[a].name + '，数量：' + items[a].count + items[a].unit
-        + '，单价：' + (items[a].price).toFixed(2) + '(元)，小计：' + (items[a].count * items[a].price).toFixed(2)
-        + '(元)\n' + '----------------------\n' + '总计：' + (items[a].count * items[a].price).toFixed(2)
-        + '(元)\n' + '**********************';
+function dealDiffBarcode(input) {
+    var n, inputObj = {};
+    for(var j = 0; j < input.length; j++) {
+        n = 1;
+        var index = input[j].indexOf("-");
+        if(index > 0) {
+            var dealResult = dealPattern(input[j]);
+            input[j] = dealResult[0];
+            n = parseInt(dealResult[1]);
+        }
+        var key = input[j];
+        if(!inputObj[key]) {
+            inputObj[key] = 0;
+        }
+        inputObj[key] += n;
     }
+    return inputObj;
+}
+
+function dealPattern(temp) {
+    var i = temp.split("-");
+    return i;
+}
+
+function print(items) {
+    var result = '***<没钱赚商店>购物清单***\n', middle = "";
+    var sum = 0.0;
+    for(var a = 0; a < items.length; a++) {
+        middle +=
+        '名称：' + items[a].name + '，数量：' + items[a].count + items[a].unit
+        + '，单价：' + (items[a].price).toFixed(2) + '(元)，小计：' + (items[a].count * items[a].price).toFixed(2)
+        + '(元)\n';
+        sum += (items[a].count * items[a].price);
+    }
+    result += middle + '----------------------\n' + '总计：' + sum.toFixed(2) + '(元)\n' + '**********************';
     console.log(result);
 }
+
