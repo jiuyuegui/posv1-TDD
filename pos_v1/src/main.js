@@ -1,13 +1,22 @@
 function printInventory(inputs) {
-    var input = [], items = [];
-    var allItems = loadAllItems();
+    var input = tansferinput(inputs);
+    var obj = dealDiffBarcode(input);
+    print(printInfo(obj));
+}
+
+function tansferinput(inputs) {
+    var input = [];
     if((typeof inputs) == "string") {
         input[0] = inputs;
     } else {
         input = inputs;
     }
-    var obj = {};
-    obj = dealDiffBarcode(input);
+    return input;
+}
+
+function printInfo(obj) {
+    var items = [];
+    var allItems = loadAllItems();
     for(var key in obj) {
         for(var i = 0; i < allItems.length; i++) {
             if(key == allItems[i].barcode) {
@@ -23,7 +32,7 @@ function printInventory(inputs) {
             }
         }
     }
-    print(items);
+    return items;
 }
 
 function dealDiffBarcode(input) {
