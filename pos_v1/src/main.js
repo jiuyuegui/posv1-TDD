@@ -75,7 +75,7 @@ function print(items) {
     var sum = 0.0, save, totalSave = 0.0, divide = 0.0;
     for(var a = 0; a < items.length; a++) {
         if(items[a].promot) {
-            promotInfo += '挥泪赠送商品：\n' + '名称：' + items[a].name + '，数量：' + Math.floor(items[a].count / 3)
+            promotInfo += '名称：' + items[a].name + '，数量：' + Math.floor(items[a].count / 3)
                           + items[a].unit + '\n';
 
             save = Math.floor(items[a].count / 3) * items[a].price;
@@ -93,10 +93,11 @@ function print(items) {
 
     }
     if(promotInfo != "") {
-        promotInfo = '----------------------\n' + promotInfo;
+        promotInfo = '----------------------\n' + '挥泪赠送商品：\n' + promotInfo;
         lastwords = '节省：' + totalSave.toFixed(2) + '(元)\n';
     }
     result += middle + promotInfo + '----------------------\n' + '总计：' + (sum - totalSave).toFixed(2) + '(元)\n'
               + lastwords + '**********************';
     console.log(result);
 }
+
